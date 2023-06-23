@@ -1,0 +1,13 @@
+{
+  "name": "new_langue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "AbdelfetahDev",
+  "license": "ISC",
+  "type": "module"
+}

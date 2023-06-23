@@ -1,0 +1,9 @@
+var test = 5 + 5
+
+fun wow(t){
+    var inside = 5 + t
+}
+
+wow(5)
+
+var hi = test * 5
