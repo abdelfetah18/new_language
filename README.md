@@ -4,7 +4,6 @@ I have made a new programming language interpreter in javascript to pratice the 
 
 ## **CURRENT_GOALS**
 
-- Implement a return keyword for function.
 - Add StringLiterals.
 - Add Arrays.
 - Add Dictionary Object.
