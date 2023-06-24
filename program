@@ -6,5 +6,5 @@ fun wow(t){
 }
 
 var returns = wow(5)
-
+println(returns)
 var hi = test * 5

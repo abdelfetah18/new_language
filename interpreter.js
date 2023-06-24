@@ -1,3 +1,5 @@
+import { FunctionBody, FunctionObject, NativeFunction } from "./ast.js";
+
 class Interpreter {
     constructor(){
         this.execution_contexts = [];
@@ -30,7 +32,10 @@ class Interpreter {
     }
 
     run(){
+        this.append_new_execution_context();
+        this.current_execution_context().set("println", new FunctionObject("println", ["value"], new FunctionBody([], [new NativeFunction("println")])));
         this.ast.execute(this);
+        this.pop_current_execution_context();
     }
 };
 

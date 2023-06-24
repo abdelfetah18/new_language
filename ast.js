@@ -46,7 +46,7 @@ class FunctionObject {
         }
         interpreter.append_new_execution_context();
         for(let i = 0; i < args.length; i++){
-            interpreter.current_execution_context().set(this.params[i], args[i].execute());
+            interpreter.current_execution_context().set(this.params[i], args[i].execute(interpreter));
         }
         let return_value = this.body.execute(interpreter);
         interpreter.pop_current_execution_context();
@@ -94,7 +94,6 @@ class CallExpression {
         if(target == null){
             // TODO: Function not declaraed.
         }
-        
         return target.execute(interpreter, this.args);
     }
 };
@@ -190,4 +189,19 @@ class ReturnExpression {
     }
 };
 
-export { AST, AssignmentExpression, BinaryExpression, CallExpression, FunctionBody, FunctionObject, FunctionDeclaration, Identifier, Value, VariableDeclaration, ScopeNode, ReturnExpression };
+class NativeFunction {
+    constructor(name){
+        this.name = name;
+    }
+
+    execute(interpreter){
+        switch(this.name){
+            case "println":{
+                console.log(interpreter.resolve_identifer("value"));
+                break;
+            }
+        }
+    }
+};
+
+export { AST, AssignmentExpression, BinaryExpression, CallExpression, FunctionBody, FunctionObject, FunctionDeclaration, Identifier, Value, VariableDeclaration, ScopeNode, ReturnExpression, NativeFunction };

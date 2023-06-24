@@ -23,7 +23,9 @@ console.log("[*] Parsing done.");
 let interpreter = new Interpreter();
 
 interpreter.ast = ast;
+console.log("\n[ PROGRAM OUTPUT ] ===============================\n")
 interpreter.run();
+console.log("\n==================================================\n")
 
 
-console.log("\n[ PROGRAM ] ===============================\n",{ ast: ast.declaration[0].init, data: interpreter.all_the_execution_context });
+console.log("\n[ PROGRAM AST/MEMORY ] ===============================\n",{ ast: ast.declaration[0].init, data: interpreter.all_the_execution_context });
