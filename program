@@ -5,6 +5,8 @@ fun wow(t){
     return 5
 }
 
-var returns = wow(5)
-println(returns)
-var hi = test * 5
+
+println(wow(10))
+println(true)
+println("HelloWorld")
+println(1337)

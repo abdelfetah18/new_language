@@ -28,6 +28,7 @@ class Parser {
         this.current = this.lexer.next();
     }
     is_number(){ return this.current_token().type == "NUMBER"; }
+    is_string(){ return this.current_token().type == "STRING"; }
     is_boolean(){ return this.current_token().type == "KEYWORD" && (this.current_token().value == "true" || this.current_token().value == "false"); }
     is_null(){ return this.current_token().type == "KEYWORD" && this.current_token().value == "null"; }
     is_identifier(){ return this.current_token().type == "IDENTIFIER"; }
@@ -210,7 +211,7 @@ class Parser {
         if(left_hande_side != null)
             return left_hande_side;
         if(this.is_number()){
-            let factor = new Value(this.current_token().value);
+            let factor = new Value(this.current_token().value, "NUMBER");
             this.consume();
             return factor;
         }
@@ -429,14 +430,27 @@ class Parser {
             this.consume();
             // TODO: If it Operation then parseBinaryExpression.
             if(this.is_binary_op())
-                return this.parse_binary_expression(new Value(value));
+                return this.parse_binary_expression(new Value(value, "NUMBER"));
             // Else.
-            return new Value(value);
+            return new Value(value, "NUMBER");
+        }
+
+        if(this.is_string()){
+            let value = this.current_token().value;
+            this.consume();
+            return new Value(value, "STRING");
         }
         
-        if(this.is_boolean() || this.is_null()){
-            let value = this/this.current_token().value;
-            return new Value(value);
+        if(this.is_boolean()){
+            let value = this.current_token().value;
+            this.consume();
+            return new Value(value, "BOOLEAN");
+        }
+        
+        if(this.is_null()){
+            let value = this.current_token().value;
+            this.consume();
+            return new Value(value, "BOOLEAN");
         }
     }
 

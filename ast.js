@@ -110,12 +110,25 @@ class VariableDeclaration {
 };
 
 class Value {
-    constructor(value){
+    constructor(value, type){
         this.value = value;
+        this.type = type;
     }
 
     execute(interpreter){
-        return parseInt(this.value);
+        switch(this.type){
+            case "NUMBER":
+                return parseInt(this.value);
+
+            case "NULL":
+                return null;
+
+            case "STRING":
+                return this.value;
+
+            case "BOOLEAN":
+                return this.value == "true" ? true : false;
+        }
     }
 };
 

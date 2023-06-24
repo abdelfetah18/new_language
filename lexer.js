@@ -15,8 +15,6 @@ const TOKENS = {
   '|': "BITWISE_OR",  
   '^': "BITWISE_XOR",  
   '\'': "SINGLE_QUOAT",  
-  '"': "DOUBLE_QUOAT",
-  ',': "COMMA",
   '<<': "SHIFT_LEFT",
   '>>': "SHIFT_RIGHT",
   '||': "LOGICAL_OR",
@@ -112,6 +110,22 @@ class Lexer {
             }
             
             return new Token("NUMBER", value, startPos, value.length);
+        }
+
+        if(this.current() == '"'){
+            this.consume();
+            let value = "";
+            let startPos = this.current_pos();
+
+            while(!this.is_eof() && this.current() != '"'){
+                value += this.current();
+                this.consume();
+            }
+
+            if(this.current() == '"')
+                this.consume();
+            
+            return new Token("STRING", value, startPos-1, value.length+1);
         }
 
         if(this.is_alpha()){
