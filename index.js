@@ -12,11 +12,13 @@ if(process.argv.length == 2){
 let file_path = process.argv[2];
 
 let input = readFileSync(file_path).toString();
-console.log(input);
+console.log("[ INPUT ] =========================\n",input,"\n===================================\n");
 
 
 let parser = new Parser(input);
 let ast = parser.parse_statement_list();
+
+console.log("[*] Parsing done.");
 
 let interpreter = new Interpreter();
 
@@ -24,4 +26,4 @@ interpreter.ast = ast;
 interpreter.run();
 
 
-console.log({ ast: ast.declaration[0].init, data: interpreter.all_the_execution_context });
+console.log("\n[ PROGRAM ] ===============================\n",{ ast: ast.declaration[0].init, data: interpreter.all_the_execution_context });

@@ -2,8 +2,9 @@ var test = 5 + 5
 
 fun wow(t){
     var inside = 5 + t
+    return 5
 }
 
-wow(5)
+var returns = wow(5)
 
 var hi = test * 5

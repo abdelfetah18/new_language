@@ -23,7 +23,7 @@ const TOKENS = {
   '&&': "LOGICAL_AND"
 };
 
-const KEYWORDS = ["var", "fun", "null", "true", "false"];
+const KEYWORDS = ["var", "fun", "null", "true", "false", "return"];
 
 class Token {
     constructor(type, value, startPos, length){

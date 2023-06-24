@@ -1,4 +1,4 @@
-import { AssignmentExpression, BinaryExpression, CallExpression, FunctionBody, FunctionDeclaration, Identifier, ScopeNode, Value, VariableDeclaration } from "./ast.js";
+import { AssignmentExpression, BinaryExpression, CallExpression, FunctionBody, FunctionDeclaration, Identifier, ReturnExpression, ScopeNode, Value, VariableDeclaration } from "./ast.js";
 import Lexer from "./lexer.js";
 
 const SUPPORTED_OP = {
@@ -33,6 +33,7 @@ class Parser {
     is_identifier(){ return this.current_token().type == "IDENTIFIER"; }
     is_var(){ return this.current_token().type == "KEYWORD" && this.current_token().value == "var"; }
     is_fun(){ return this.current_token().type == "KEYWORD" && this.current_token().value == "fun"; }
+    is_return(){ return this.current_token().type == "KEYWORD" && this.current_token().value == "return"; }
     is_arg(){ return this.is_null() || this.is_boolean() || this.is_number(); }
     is_eof(){ return this.current_token().type == "EOF"; }
     is_binary_op(){
@@ -77,12 +78,14 @@ class Parser {
                 statements.push(var_decl);
                 declaration.push(var_decl);
             }
+            
             // FunctionDeclaration.
             if(this.is_fun()){
                 let fun_decl = this.parse_function_declaration();
                 statements.push(fun_decl);
                 declaration.push(fun_decl);
             }
+
             // ExpressionStatement.
             let expr = this.parse_expression_statement();
             if(expr != null)
@@ -173,7 +176,6 @@ class Parser {
         
         // Parse function body
         let body = this.parse_function_body();
-        
         return new FunctionDeclaration(name, params, body); 
     }
 
@@ -401,6 +403,13 @@ class Parser {
         return new AssignmentExpression(identifier, this.parse_primary_expression());        
     }
 
+    parse_return_expression(){
+        if(this.is_return()){
+            this.consume();
+            return new ReturnExpression(this.parse_primary_expression());
+        }
+    }
+
     parse_primary_expression(){
         if(this.is_identifier()){
             let id = this.current_token().value;
@@ -444,6 +453,7 @@ class Parser {
                 statements.push(var_decl);
                 declaration.push(var_decl);
             }
+            
             // FunctionDeclaration.
             if(this.is_fun()){
                 let fun_decl = this.parse_function_declaration();
@@ -451,6 +461,12 @@ class Parser {
                 declaration.push(fun_decl);
 
             }
+            // ReturnExpression
+            if(this.is_return()){
+                let return_expr = this.parse_return_expression();
+                statements.push(return_expr);
+            }
+
             // ExpressionStatement.
             let expr = this.parse_expression_statement();
             if(expr != null)

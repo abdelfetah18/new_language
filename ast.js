@@ -25,6 +25,9 @@ class FunctionBody {
 
     execute(interpreter){
         for(let stmt of this.statements){
+            if(stmt instanceof ReturnExpression){
+                return stmt.execute(interpreter);
+            }
             stmt.execute(interpreter);
         }
     }
@@ -45,8 +48,10 @@ class FunctionObject {
         for(let i = 0; i < args.length; i++){
             interpreter.current_execution_context().set(this.params[i], args[i].execute());
         }
-        this.body.execute(interpreter);
+        let return_value = this.body.execute(interpreter);
         interpreter.pop_current_execution_context();
+        if(return_value != undefined)
+            return return_value;
     }
 };
 
@@ -90,7 +95,7 @@ class CallExpression {
             // TODO: Function not declaraed.
         }
         
-        target.execute(interpreter, this.args);
+        return target.execute(interpreter, this.args);
     }
 };
 
@@ -175,4 +180,14 @@ class BinaryExpression {
     }
 };
 
-export { AST, AssignmentExpression, BinaryExpression, CallExpression, FunctionBody, FunctionObject, FunctionDeclaration, Identifier, Value, VariableDeclaration, ScopeNode };
+class ReturnExpression {
+    constructor(expr){
+        this.expr = expr;
+    }
+
+    execute(interpreter){
+        return this.expr.execute(interpreter);
+    }
+};
+
+export { AST, AssignmentExpression, BinaryExpression, CallExpression, FunctionBody, FunctionObject, FunctionDeclaration, Identifier, Value, VariableDeclaration, ScopeNode, ReturnExpression };
